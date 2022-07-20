@@ -1,13 +1,14 @@
 class UsersController < ApplicationController
-
+# GET '/me'
     def show
         return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
         user = User.find(session[:user_id])
         render json: user, status: :ok
     end
 
+# POST '/signup'
     def create
-        user = User.create(user_params)
+        user = User.create!(user_params)
         session[:user_id] = user.id
         if user.valid?
             render json: user, status: :created
